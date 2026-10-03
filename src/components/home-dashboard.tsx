@@ -1,4 +1,4 @@
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -55,6 +55,22 @@ export function HomeDashboard() {
       <ThemedView style={styles.container}>
         <Header greeting={greeting} />
         <DailyFlowCard />
+        <View style={{ marginTop: Spacing.three, alignItems: 'center', width: '100%' }}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Start Workout"
+            onPress={() => router.push('/ai-workout')}
+            style={({ pressed }) => [
+              styles.primaryButton,
+              { backgroundColor: '#4caf50', opacity: pressed ? 0.85 : 1, borderWidth: 2, borderColor: '#fff' },
+            ]}>
+            <AppIcon name={HomeIcons.play} color={theme.onPrimary} size={18} />
+            <ThemedText type="smallBold" style={{ color: theme.onPrimary }}>
+              Start Workout
+            </ThemedText>
+          </Pressable>
+        </View>
+
         <DailyProgressSection />
         <ActivityStatsSection />
         <QuickAccessSection />
@@ -140,20 +156,7 @@ function DailyFlowCard() {
         <MetaChip icon="workout" label={workout.focus} />
       </View>
 
-      <Link href="/ai-workout" asChild>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={`Start workout: ${workout.title}`}
-          style={({ pressed }) => [
-            styles.primaryButton,
-            { backgroundColor: theme.primary, opacity: pressed ? 0.85 : 1 },
-          ]}>
-          <AppIcon name={HomeIcons.play} color={theme.onPrimary} size={18} />
-          <ThemedText type="smallBold" style={{ color: theme.onPrimary }}>
-            Start Workout
-          </ThemedText>
-        </Pressable>
-      </Link>
+
     </ThemedView>
   );
 }
@@ -319,8 +322,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   container: {
     maxWidth: MaxContentWidth,
